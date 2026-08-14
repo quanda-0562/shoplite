@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ShopLite - Giỏ hàng</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        >
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="page-shell header-inner">
+                <a class="brand" href="index.html">
+                    <div class="brand-mark">ShopLite</div>
+                </a>
+
+                <div class="header-tools">
+                    <input class="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
+                        🛒
+                        <span class="cart-badge">3</span>
+                    </a>
+                </div>
+
+                <nav class="site-nav" aria-label="Điều hướng chính">
+                    <a href="index.html">Trang chủ</a>
+                    <a href="product.html">Sản phẩm</a>
+                    <a href="#">Bộ sưu tập</a>
+                    <a href="#">Áo khoác</a>
+                    <a href="#">Giày</a>
+                    <a href="#">Phụ kiện</a>
+                    <a class="is-active" href="cart.html">Giỏ hàng</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Giỏ hàng của bạn</span>
+                    <h2>Kiểm tra lại đơn trước khi thanh toán</h2>
+                    <p>
+                        Layout này gồm danh sách sản phẩm ở bên trái và khối tổng kết ở bên phải. Trên mobile,
+                        hai khối sẽ tự xếp dọc để thao tác thoải mái hơn.
+                    </p>
+                </div>
+
+                <div class="cart-layout">
+                    <section class="cart-list surface-card" aria-label="Danh sách sản phẩm trong giỏ">
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <a class="cart-thumb" href="product.html" aria-label="Xem chi tiết Áo sơ mi linen form relaxed">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=80"
+                                        alt="Áo sơ mi linen form relaxed"
+                                    >
+                                </a>
+                                <div class="cart-item-name">
+                                    <h3><a href="product.html">Áo sơ mi linen form relaxed</a></h3>
+                                    <p>Màu kem, size M</p>
+                                </div>
+                            </div>
+                            <input class="cart-qty" type="number" value="1" min="1" aria-label="Số lượng Áo sơ mi linen form relaxed">
+                            <div class="cart-price">449.000 đ</div>
+                            <button class="cart-remove-button" type="button">Xóa</button>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <a class="cart-thumb" href="product.html" aria-label="Xem chi tiết Sneaker phối màu retro">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80"
+                                        alt="Sneaker phối màu retro"
+                                    >
+                                </a>
+                                <div class="cart-item-name">
+                                    <h3><a href="product.html">Sneaker phối màu retro</a></h3>
+                                    <p>Phối màu kem đỏ, size 41</p>
+                                </div>
+                            </div>
+                            <input class="cart-qty" type="number" value="1" min="1" aria-label="Số lượng Sneaker phối màu retro">
+                            <div class="cart-price">890.000 đ</div>
+                            <button class="cart-remove-button" type="button">Xóa</button>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <a class="cart-thumb" href="product.html" aria-label="Xem chi tiết Túi đeo vai da mềm">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80"
+                                        alt="Túi đeo vai da mềm"
+                                    >
+                                </a>
+                                <div class="cart-item-name">
+                                    <h3><a href="product.html">Túi đeo vai da mềm</a></h3>
+                                    <p>Màu nâu, dây dài điều chỉnh</p>
+                                </div>
+                            </div>
+                            <input class="cart-qty" type="number" value="1" min="1" aria-label="Số lượng Túi đeo vai da mềm">
+                            <div class="cart-price">515.000 đ</div>
+                            <button class="cart-remove-button" type="button">Xóa</button>
+                        </div>
+                    </section>
+
+                    <aside class="cart-summary surface-card">
+                        <h2>Tóm tắt đơn hàng</h2>
+                        <div class="cart-summary-row">
+                            <span>Tạm tính</span>
+                            <strong>1.854.000 đ</strong>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>Phí vận chuyển</span>
+                            <strong>30.000 đ</strong>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>Giảm giá</span>
+                            <strong>-50.000 đ</strong>
+                        </div>
+                        <div class="cart-summary-total">
+                            <span>Tổng cộng</span>
+                            <strong>1.834.000 đ</strong>
+                        </div>
+                        <button class="cart-checkout-button" type="button">Thanh toán</button>
+                        <p class="cart-summary-note">
+                            Đây là giao diện tĩnh để mô phỏng cấu trúc giỏ hàng. Chỉ cần thêm class
+                            <code>dark</code> vào thẻ <code>body</code> là toàn bộ theme sẽ đổi đồng bộ.
+                        </p>
+                    </aside>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="page-shell footer-inner">
+                <h2>Liên hệ</h2>
+                <p>Email: support@shoplite.vn</p>
+                <p>Facebook: fb.com/shoplite</p>
+                <p>Số điện thoại: 0987 654 321</p>
+                <p>&copy; 2026 ShopLite</p>
+            </div>
+        </footer>
+    </body>
+</html>
