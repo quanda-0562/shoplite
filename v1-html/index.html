@@ -21,38 +21,38 @@
 
                 <div class="header-tools">
                     <input class="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
-                    <button class="cart-button" type="button" aria-label="Giỏ hàng">
+                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
                         🛒
                         <span class="cart-badge">3</span>
-                    </button>
+                    </a>
                 </div>
 
                 <nav class="site-nav" aria-label="Điều hướng chính">
-                    <a href="index.html">Trang chủ</a>
-                    <a href="#">Áo</a>
-                    <a href="#">Quần</a>
-                    <a href="#">Đầm & Váy</a>
+                    <a class="is-active" href="index.html">Trang chủ</a>
+                    <a href="product.html">Sản phẩm</a>
+                    <a href="#">Bộ sưu tập</a>
                     <a href="#">Áo khoác</a>
                     <a href="#">Giày</a>
                     <a href="#">Phụ kiện</a>
+                    <a href="cart.html">Giỏ hàng</a>
                 </nav>
             </div>
         </header>
 
         <main class="page-main">
-            <section class="page-shell products-section">
+            <section class="page-shell">
                 <div class="section-heading">
                     <span class="eyebrow">Bộ sưu tập mới</span>
                     <h2>Sản phẩm nổi bật</h2>
                     <p>
-                        Lưới sản phẩm này dùng CSS Grid với
-                        <code>repeat(auto-fill, minmax(220px, 1fr))</code> để tự đổi số cột theo độ rộng màn hình
-                        mà không cần media query.
+                        ShopLite dùng chung một bộ CSS variables cho màu sắc, spacing và bo góc. Lưới sản phẩm tự
+                        đổi số cột nhờ <code>repeat(auto-fill, minmax(220px, 1fr))</code> nên vẫn mượt từ màn hẹp
+                        360px tới desktop rộng.
                     </p>
                 </div>
 
                 <div class="product-grid">
-                    <article class="product-card">
+                    <article class="product-card surface-card">
                         <a class="product-image" href="product.html" aria-label="Xem chi tiết Áo sơ mi linen form relaxed">
                             <img
                                 src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80"
@@ -67,7 +67,7 @@
                         <button class="product-button" type="button">Thêm vào giỏ</button>
                     </article>
 
-                    <article class="product-card">
+                    <article class="product-card surface-card">
                         <a class="product-image" href="product.html" aria-label="Xem chi tiết Áo thun ribbed tối giản">
                             <img
                                 src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80"
@@ -82,7 +82,7 @@
                         <button class="product-button" type="button">Thêm vào giỏ</button>
                     </article>
 
-                    <article class="product-card">
+                    <article class="product-card surface-card">
                         <a class="product-image" href="product.html" aria-label="Xem chi tiết Đầm midi tay phồng">
                             <img
                                 src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=900&q=80"
@@ -97,7 +97,7 @@
                         <button class="product-button" type="button">Thêm vào giỏ</button>
                     </article>
 
-                    <article class="product-card">
+                    <article class="product-card surface-card">
                         <a class="product-image" href="product.html" aria-label="Xem chi tiết Áo khoác denim washed">
                             <img
                                 src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=80"
@@ -112,7 +112,7 @@
                         <button class="product-button" type="button">Thêm vào giỏ</button>
                     </article>
 
-                    <article class="product-card">
+                    <article class="product-card surface-card">
                         <a class="product-image" href="product.html" aria-label="Xem chi tiết Sneaker phối màu retro">
                             <img
                                 src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80"
@@ -127,7 +127,7 @@
                         <button class="product-button" type="button">Thêm vào giỏ</button>
                     </article>
 
-                    <article class="product-card">
+                    <article class="product-card surface-card">
                         <a class="product-image" href="product.html" aria-label="Xem chi tiết Túi đeo vai da mềm">
                             <img
                                 src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80"
