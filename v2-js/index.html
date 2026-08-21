@@ -20,7 +20,13 @@
                 </a>
 
                 <div class="header-tools">
-                    <input class="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+                    <input
+                        id="search-input"
+                        class="search-input"
+                        type="search"
+                        placeholder="Tìm kiếm sản phẩm..."
+                        aria-label="Tìm kiếm sản phẩm"
+                    >
                     <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
                         🛒
                         <span class="cart-badge">3</span>
@@ -51,97 +57,7 @@
                     </p>
                 </div>
 
-                <div class="product-grid">
-                    <article class="product-card surface-card">
-                        <a class="product-image" href="product.html" aria-label="Xem chi tiết Áo sơ mi linen form relaxed">
-                            <img
-                                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80"
-                                alt="Áo sơ mi linen màu kem"
-                            >
-                        </a>
-                        <h3><a href="product.html">Áo sơ mi linen form relaxed</a></h3>
-                        <p>Chất vải nhẹ, thoáng, phù hợp đi làm lẫn đi chơi cuối tuần.</p>
-                        <div class="product-meta">
-                            <span class="product-price">449.000 đ</span>
-                        </div>
-                        <button class="product-button" type="button">Thêm vào giỏ</button>
-                    </article>
-
-                    <article class="product-card surface-card">
-                        <a class="product-image" href="product.html" aria-label="Xem chi tiết Áo thun ribbed tối giản">
-                            <img
-                                src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80"
-                                alt="Áo thun ribbed màu be"
-                            >
-                        </a>
-                        <h3><a href="product.html">Áo thun ribbed tối giản</a></h3>
-                        <p>Thiết kế ôm nhẹ, dễ phối với quần jeans hoặc chân váy chữ A.</p>
-                        <div class="product-meta">
-                            <span class="product-price">279.000 đ</span>
-                        </div>
-                        <button class="product-button" type="button">Thêm vào giỏ</button>
-                    </article>
-
-                    <article class="product-card surface-card">
-                        <a class="product-image" href="product.html" aria-label="Xem chi tiết Đầm midi tay phồng">
-                            <img
-                                src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=900&q=80"
-                                alt="Đầm midi tay phồng màu xanh pastel"
-                            >
-                        </a>
-                        <h3><a href="product.html">Đầm midi tay phồng</a></h3>
-                        <p>Dáng midi mềm mại, điểm nhấn eo cao giúp tổng thể thanh thoát hơn.</p>
-                        <div class="product-meta">
-                            <span class="product-price">599.000 đ</span>
-                        </div>
-                        <button class="product-button" type="button">Thêm vào giỏ</button>
-                    </article>
-
-                    <article class="product-card surface-card">
-                        <a class="product-image" href="product.html" aria-label="Xem chi tiết Áo khoác denim washed">
-                            <img
-                                src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=80"
-                                alt="Áo khoác denim xanh washed"
-                            >
-                        </a>
-                        <h3><a href="product.html">Áo khoác denim washed</a></h3>
-                        <p>Phom suông hiện đại, phối cùng tee trắng là có ngay set đồ năng động.</p>
-                        <div class="product-meta">
-                            <span class="product-price">725.000 đ</span>
-                        </div>
-                        <button class="product-button" type="button">Thêm vào giỏ</button>
-                    </article>
-
-                    <article class="product-card surface-card">
-                        <a class="product-image" href="product.html" aria-label="Xem chi tiết Sneaker phối màu retro">
-                            <img
-                                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80"
-                                alt="Giày sneaker phối màu retro"
-                            >
-                        </a>
-                        <h3><a href="product.html">Sneaker phối màu retro</a></h3>
-                        <p>Đế êm, ôm chân, phù hợp cho cả ngày dài di chuyển trong thành phố.</p>
-                        <div class="product-meta">
-                            <span class="product-price">890.000 đ</span>
-                        </div>
-                        <button class="product-button" type="button">Thêm vào giỏ</button>
-                    </article>
-
-                    <article class="product-card surface-card">
-                        <a class="product-image" href="product.html" aria-label="Xem chi tiết Túi đeo vai da mềm">
-                            <img
-                                src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80"
-                                alt="Túi đeo vai da mềm màu nâu"
-                            >
-                        </a>
-                        <h3><a href="product.html">Túi đeo vai da mềm</a></h3>
-                        <p>Ngăn chứa rộng, gam màu trung tính dễ phối đồ công sở và dạo phố.</p>
-                        <div class="product-meta">
-                            <span class="product-price">515.000 đ</span>
-                        </div>
-                        <button class="product-button" type="button">Thêm vào giỏ</button>
-                    </article>
-                </div>
+                <section id="product-grid" class="product-grid" aria-label="Danh sách sản phẩm"></section>
             </section>
         </main>
 
@@ -154,5 +70,61 @@
                 <p>&copy; 2026 ShopLite</p>
             </div>
         </footer>
+
+        <script type="module">
+            import { products } from "./data.js";
+            import { filterByKeyword } from "./product-utils.js";
+
+            const searchInput = document.getElementById("search-input");
+            const productGrid = document.getElementById("product-grid");
+
+            function formatPrice(price) {
+                return `${price.toLocaleString("vi-VN")} đ`;
+            }
+
+            function productCardHTML(product) {
+                return `
+                    <article class="product-card surface-card" data-id="${product.id}">
+                        <a class="product-image" href="product.html?id=${product.id}" aria-label="Xem chi tiết ${product.title}">
+                            <img src="${product.thumbnail}" alt="${product.title}">
+                        </a>
+                        <h3><a href="product.html?id=${product.id}">${product.title}</a></h3>
+                        <p>${product.category} · ${product.rating}/5 sao</p>
+                        <div class="product-meta">
+                            <span class="product-price">${formatPrice(product.price)}</span>
+                        </div>
+                        <button class="product-button" type="button" data-action="add-to-cart">Thêm vào giỏ</button>
+                    </article>
+                `;
+            }
+
+            function renderProducts(list) {
+                if (list.length === 0) {
+                    productGrid.innerHTML = '<p>Không tìm thấy sản phẩm phù hợp.</p>';
+                    return;
+                }
+
+                productGrid.innerHTML = list.map(productCardHTML).join("");
+            }
+
+            searchInput.addEventListener("input", (event) => {
+                renderProducts(filterByKeyword(products, event.target.value));
+            });
+
+            // Một listener xử lý mọi nút, kể cả các card được render lại sau khi tìm kiếm.
+            productGrid.addEventListener("click", (event) => {
+                const card = event.target.closest("[data-id]");
+                const addButton = event.target.closest('[data-action="add-to-cart"]');
+
+                if (!card || !addButton) {
+                    return;
+                }
+
+                const product = products.find((item) => item.id === Number(card.dataset.id));
+                console.log("Sản phẩm được thêm vào giỏ:", product);
+            });
+
+            renderProducts(products);
+        </script>
     </body>
 </html>

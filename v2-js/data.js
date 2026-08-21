@@ -33,7 +33,7 @@ export const products = [
     },
     {
         id: 5,
-        title: "Sneaker phối màu retro",
+        title: "Giày Sneaker phối màu retro",
         price: 890000,
         thumbnail: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
         category: "shoes",

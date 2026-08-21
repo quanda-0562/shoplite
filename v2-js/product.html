@@ -43,33 +43,7 @@
             <section class="page-shell">
                 <a class="back-link" href="index.html">← Quay lại danh sách sản phẩm</a>
 
-                <div class="product-detail">
-                    <div class="detail-gallery surface-card">
-                        <div class="detail-image">
-                            <img
-                                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80"
-                                alt="Áo sơ mi linen form relaxed màu kem"
-                            >
-                        </div>
-                    </div>
-
-                    <article class="detail-panel surface-card">
-                        <span class="eyebrow">Chi tiết sản phẩm</span>
-                        <h1>Áo sơ mi linen form relaxed</h1>
-                        <p class="detail-price">449.000 đ</p>
-                        <p class="detail-description">
-                            Mẫu áo sơ mi linen mềm nhẹ với phom relaxed vừa đủ rộng, đem lại cảm giác thoải mái
-                            trong ngày nóng mà vẫn giữ được vẻ chỉn chu. Thiết kế cổ đứng thấp và hàng nút ẩn giúp
-                            tổng thể tinh gọn, dễ phối trong nhiều hoàn cảnh.
-                        </p>
-                        <ul class="detail-list">
-                            <li>Chất liệu linen pha cotton, mặc thoáng và ít nhăn hơn linen thuần.</li>
-                            <li>Phom relaxed, tay dài, phù hợp phối quần âu, jeans hoặc short.</li>
-                            <li>Màu kem trung tính, dễ kết hợp cùng phụ kiện tối giản.</li>
-                        </ul>
-                        <button class="detail-button" type="button">Thêm vào giỏ</button>
-                    </article>
-                </div>
+                <section id="product-detail" aria-label="Chi tiết sản phẩm"></section>
             </section>
         </main>
 
@@ -82,5 +56,48 @@
                 <p>&copy; 2026 ShopLite</p>
             </div>
         </footer>
+
+        <script type="module">
+            import { products } from "./data.js";
+
+            const productDetail = document.getElementById("product-detail");
+            const selectedId = Number(new URLSearchParams(window.location.search).get("id"));
+            const product = products.find((item) => item.id === selectedId) || products[0];
+
+            function formatPrice(price) {
+                return `${price.toLocaleString("vi-VN")} đ`;
+            }
+
+            function productDescription(item) {
+                return `${item.title} thuộc nhóm ${item.category}, có thiết kế dễ phối và phù hợp cho nhu cầu sử dụng hằng ngày.`;
+            }
+
+            function productDetailHTML(item) {
+                return `
+                    <div class="product-detail" data-id="${item.id}">
+                        <div class="detail-gallery surface-card">
+                            <div class="detail-image">
+                                <img src="${item.thumbnail}" alt="${item.title}">
+                            </div>
+                        </div>
+
+                        <article class="detail-panel surface-card">
+                            <span class="eyebrow">${item.category}</span>
+                            <h1>${item.title}</h1>
+                            <p class="detail-price">${formatPrice(item.price)}</p>
+                            <p class="detail-description">${productDescription(item)}</p>
+                            <ul class="detail-list">
+                                <li>Mã sản phẩm: #${item.id}</li>
+                                <li>Danh mục: ${item.category}</li>
+                                <li>Đánh giá khách hàng: ${item.rating}/5 sao</li>
+                            </ul>
+                            <button class="detail-button" type="button" data-action="add-to-cart">Thêm vào giỏ</button>
+                        </article>
+                    </div>
+                `;
+            }
+
+            productDetail.innerHTML = productDetailHTML(product);
+        </script>
     </body>
 </html>

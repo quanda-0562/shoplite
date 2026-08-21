@@ -1,16 +1,25 @@
 export function filterByKeyword(list, q) {
-    const normalizedQuery = q.trim().toLowerCase();
+    const normalizedQuery = normalizeVietnamese(q);
 
     if (!normalizedQuery) {
         return [...list];
     }
 
     return list.filter((product) => {
-        const title = product.title.toLowerCase();
-        const category = product.category.toLowerCase();
+        const title = normalizeVietnamese(product.title);
+        const category = normalizeVietnamese(product.category);
 
         return title.includes(normalizedQuery) || category.includes(normalizedQuery);
     });
+}
+
+export function normalizeVietnamese(text) {
+    return text
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d");
 }
 
 export function sortByPrice(list, dir = "asc") {
