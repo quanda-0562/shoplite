@@ -29,7 +29,7 @@
                     >
                     <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
                         🛒
-                        <span class="cart-badge">3</span>
+                        <span id="cart-badge" class="cart-badge">0</span>
                     </a>
                 </div>
 
@@ -72,14 +72,17 @@
         </footer>
 
         <script type="module">
-            import { products } from "./data.js";
-            import { filterByKeyword } from "./product-utils.js";
+            import { fetchProducts } from "./data.js";
+            import { addToCart, getCartQuantity } from "./cart.js";
+            import { filterByKeyword, formatPrice } from "./product-utils.js";
 
             const searchInput = document.getElementById("search-input");
             const productGrid = document.getElementById("product-grid");
+            const cartBadge = document.getElementById("cart-badge");
+            let products = [];
 
-            function formatPrice(price) {
-                return `${price.toLocaleString("vi-VN")} đ`;
+            function updateCartBadge() {
+                cartBadge.textContent = getCartQuantity();
             }
 
             function productCardHTML(product) {
@@ -98,33 +101,63 @@
                 `;
             }
 
+            function renderSkeletons() {
+                productGrid.innerHTML = Array.from({ length: 8 }, () => `
+                    <article class="product-card surface-card skeleton-card" aria-hidden="true">
+                        <div class="product-image skeleton"></div>
+                        <div class="skeleton skeleton-line"></div>
+                        <div class="skeleton skeleton-line skeleton-line-short"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </article>
+                `).join("");
+            }
+
             function renderProducts(list) {
                 if (list.length === 0) {
-                    productGrid.innerHTML = '<p>Không tìm thấy sản phẩm phù hợp.</p>';
+                    productGrid.innerHTML = '<p class="feedback-message">Không tìm thấy sản phẩm phù hợp.</p>';
                     return;
                 }
 
                 productGrid.innerHTML = list.map(productCardHTML).join("");
             }
 
+            function renderError(message) {
+                productGrid.innerHTML = `<p class="feedback-message is-error">Không thể tải sản phẩm. ${message}</p>`;
+            }
+
+            async function loadProducts() {
+                renderSkeletons();
+
+                try {
+                    products = await fetchProducts();
+                    renderProducts(products);
+                } catch (error) {
+                    renderError(error.message);
+                }
+            }
+
             searchInput.addEventListener("input", (event) => {
                 renderProducts(filterByKeyword(products, event.target.value));
             });
 
-            // Một listener xử lý mọi nút, kể cả các card được render lại sau khi tìm kiếm.
             productGrid.addEventListener("click", (event) => {
-                const card = event.target.closest("[data-id]");
                 const addButton = event.target.closest('[data-action="add-to-cart"]');
+                const card = event.target.closest("[data-id]");
 
-                if (!card || !addButton) {
+                if (!addButton || !card) {
                     return;
                 }
 
                 const product = products.find((item) => item.id === Number(card.dataset.id));
-                console.log("Sản phẩm được thêm vào giỏ:", product);
+
+                if (product) {
+                    addToCart(product);
+                    updateCartBadge();
+                }
             });
 
-            renderProducts(products);
+            updateCartBadge();
+            loadProducts();
         </script>
     </body>
 </html>

@@ -31,3 +31,10 @@ export function sortByPrice(list, dir = "asc") {
 
     return sortedList.sort((a, b) => a.price - b.price);
 }
+
+export function formatPrice(price) {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD"
+    }).format(price);
+}

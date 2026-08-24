@@ -23,7 +23,7 @@
                     <input class="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
                     <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
                         🛒
-                        <span class="cart-badge">3</span>
+                        <span id="cart-badge" class="cart-badge">0</span>
                     </a>
                 </div>
 
@@ -51,79 +51,17 @@
                 </div>
 
                 <div class="cart-layout">
-                    <section class="cart-list surface-card" aria-label="Danh sách sản phẩm trong giỏ">
-                        <div class="cart-item">
-                            <div class="cart-item-info">
-                                <a class="cart-thumb" href="product.html" aria-label="Xem chi tiết Áo sơ mi linen form relaxed">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=80"
-                                        alt="Áo sơ mi linen form relaxed"
-                                    >
-                                </a>
-                                <div class="cart-item-name">
-                                    <h3><a href="product.html">Áo sơ mi linen form relaxed</a></h3>
-                                    <p>Màu kem, size M</p>
-                                </div>
-                            </div>
-                            <input class="cart-qty" type="number" value="1" min="1" aria-label="Số lượng Áo sơ mi linen form relaxed">
-                            <div class="cart-price">449.000 đ</div>
-                            <button class="cart-remove-button" type="button">Xóa</button>
-                        </div>
-
-                        <div class="cart-item">
-                            <div class="cart-item-info">
-                                <a class="cart-thumb" href="product.html" aria-label="Xem chi tiết Sneaker phối màu retro">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80"
-                                        alt="Sneaker phối màu retro"
-                                    >
-                                </a>
-                                <div class="cart-item-name">
-                                    <h3><a href="product.html">Sneaker phối màu retro</a></h3>
-                                    <p>Phối màu kem đỏ, size 41</p>
-                                </div>
-                            </div>
-                            <input class="cart-qty" type="number" value="1" min="1" aria-label="Số lượng Sneaker phối màu retro">
-                            <div class="cart-price">890.000 đ</div>
-                            <button class="cart-remove-button" type="button">Xóa</button>
-                        </div>
-
-                        <div class="cart-item">
-                            <div class="cart-item-info">
-                                <a class="cart-thumb" href="product.html" aria-label="Xem chi tiết Túi đeo vai da mềm">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80"
-                                        alt="Túi đeo vai da mềm"
-                                    >
-                                </a>
-                                <div class="cart-item-name">
-                                    <h3><a href="product.html">Túi đeo vai da mềm</a></h3>
-                                    <p>Màu nâu, dây dài điều chỉnh</p>
-                                </div>
-                            </div>
-                            <input class="cart-qty" type="number" value="1" min="1" aria-label="Số lượng Túi đeo vai da mềm">
-                            <div class="cart-price">515.000 đ</div>
-                            <button class="cart-remove-button" type="button">Xóa</button>
-                        </div>
-                    </section>
+                    <section id="cart-list" class="cart-list surface-card" aria-label="Danh sách sản phẩm trong giỏ"></section>
 
                     <aside class="cart-summary surface-card">
                         <h2>Tóm tắt đơn hàng</h2>
                         <div class="cart-summary-row">
                             <span>Tạm tính</span>
-                            <strong>1.854.000 đ</strong>
-                        </div>
-                        <div class="cart-summary-row">
-                            <span>Phí vận chuyển</span>
-                            <strong>30.000 đ</strong>
-                        </div>
-                        <div class="cart-summary-row">
-                            <span>Giảm giá</span>
-                            <strong>-50.000 đ</strong>
+                            <strong id="cart-subtotal">$0.00</strong>
                         </div>
                         <div class="cart-summary-total">
                             <span>Tổng cộng</span>
-                            <strong>1.834.000 đ</strong>
+                            <strong id="cart-total">$0.00</strong>
                         </div>
                         <button class="cart-checkout-button" type="button">Thanh toán</button>
                         <p class="cart-summary-note">
@@ -144,5 +82,100 @@
                 <p>&copy; 2026 ShopLite</p>
             </div>
         </footer>
+
+        <script type="module">
+            import {
+                getCart,
+                getCartQuantity,
+                getCartTotal,
+                removeFromCart,
+                updateQty
+            } from "./cart.js";
+            import { formatPrice } from "./product-utils.js";
+
+            const cartList = document.getElementById("cart-list");
+            const cartBadge = document.getElementById("cart-badge");
+            const cartSubtotal = document.getElementById("cart-subtotal");
+            const cartTotal = document.getElementById("cart-total");
+
+            function cartItemHTML(item) {
+                return `
+                    <article class="cart-item" data-id="${item.id}">
+                        <div class="cart-item-info">
+                            <a class="cart-thumb" href="product.html?id=${item.id}" aria-label="Xem chi tiết ${item.title}">
+                                <img src="${item.thumbnail}" alt="${item.title}">
+                            </a>
+                            <div class="cart-item-name">
+                                <h3><a href="product.html?id=${item.id}">${item.title}</a></h3>
+                                <p>${item.category}</p>
+                            </div>
+                        </div>
+                        <div class="cart-quantity" aria-label="Số lượng ${item.title}">
+                            <button type="button" data-action="decrease" aria-label="Giảm số lượng">−</button>
+                            <input class="cart-qty" type="number" value="${item.quantity}" min="1" data-action="quantity">
+                            <button type="button" data-action="increase" aria-label="Tăng số lượng">+</button>
+                        </div>
+                        <div class="cart-price">${formatPrice(item.price)}</div>
+                        <button class="cart-remove-button" type="button" data-action="remove">Xóa</button>
+                    </article>
+                `;
+            }
+
+            function renderCart() {
+                const cart = getCart();
+                const total = getCartTotal(cart);
+
+                cartBadge.textContent = getCartQuantity(cart);
+                cartSubtotal.textContent = formatPrice(total);
+                cartTotal.textContent = formatPrice(total);
+
+                if (cart.length === 0) {
+                    cartList.innerHTML = '<p class="cart-empty">Giỏ hàng đang trống. Hãy chọn sản phẩm bạn yêu thích.</p>';
+                    return;
+                }
+
+                cartList.innerHTML = cart.map(cartItemHTML).join("");
+            }
+
+            cartList.addEventListener("click", (event) => {
+                const actionButton = event.target.closest("[data-action]");
+                const item = event.target.closest("[data-id]");
+
+                if (!actionButton || !item) {
+                    return;
+                }
+
+                const productId = Number(item.dataset.id);
+                const cartItem = getCart().find((entry) => entry.id === productId);
+
+                if (actionButton.dataset.action === "remove") {
+                    removeFromCart(productId);
+                }
+
+                if (actionButton.dataset.action === "increase" && cartItem) {
+                    updateQty(productId, cartItem.quantity + 1);
+                }
+
+                if (actionButton.dataset.action === "decrease" && cartItem) {
+                    updateQty(productId, Math.max(1, cartItem.quantity - 1));
+                }
+
+                renderCart();
+            });
+
+            cartList.addEventListener("change", (event) => {
+                const quantityInput = event.target.closest('[data-action="quantity"]');
+                const item = event.target.closest("[data-id]");
+
+                if (!quantityInput || !item) {
+                    return;
+                }
+
+                updateQty(Number(item.dataset.id), quantityInput.value);
+                renderCart();
+            });
+
+            renderCart();
+        </script>
     </body>
 </html>

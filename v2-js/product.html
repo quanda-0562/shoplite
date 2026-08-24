@@ -23,7 +23,7 @@
                     <input class="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
                     <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
                         🛒
-                        <span class="cart-badge">3</span>
+                        <span id="cart-badge" class="cart-badge">0</span>
                     </a>
                 </div>
 
@@ -58,18 +58,31 @@
         </footer>
 
         <script type="module">
-            import { products } from "./data.js";
+            import { fetchProductById } from "./data.js";
+            import { addToCart, getCartQuantity } from "./cart.js";
+            import { formatPrice } from "./product-utils.js";
 
             const productDetail = document.getElementById("product-detail");
-            const selectedId = Number(new URLSearchParams(window.location.search).get("id"));
-            const product = products.find((item) => item.id === selectedId) || products[0];
+            const cartBadge = document.getElementById("cart-badge");
+            const selectedId = Number(new URLSearchParams(window.location.search).get("id")) || 1;
+            let product = null;
 
-            function formatPrice(price) {
-                return `${price.toLocaleString("vi-VN")} đ`;
+            function updateCartBadge() {
+                cartBadge.textContent = getCartQuantity();
             }
 
-            function productDescription(item) {
-                return `${item.title} thuộc nhóm ${item.category}, có thiết kế dễ phối và phù hợp cho nhu cầu sử dụng hằng ngày.`;
+            function renderLoading() {
+                productDetail.innerHTML = `
+                    <div class="product-detail detail-loading" aria-label="Đang tải sản phẩm">
+                        <div class="detail-gallery surface-card"><div class="detail-image skeleton"></div></div>
+                        <article class="detail-panel surface-card">
+                            <div class="skeleton skeleton-line"></div>
+                            <div class="skeleton skeleton-line skeleton-line-short"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-button"></div>
+                        </article>
+                    </div>
+                `;
             }
 
             function productDetailHTML(item) {
@@ -85,10 +98,10 @@
                             <span class="eyebrow">${item.category}</span>
                             <h1>${item.title}</h1>
                             <p class="detail-price">${formatPrice(item.price)}</p>
-                            <p class="detail-description">${productDescription(item)}</p>
+                            <p class="detail-description">${item.description}</p>
                             <ul class="detail-list">
                                 <li>Mã sản phẩm: #${item.id}</li>
-                                <li>Danh mục: ${item.category}</li>
+                                <li>Tồn kho: ${item.stock} sản phẩm</li>
                                 <li>Đánh giá khách hàng: ${item.rating}/5 sao</li>
                             </ul>
                             <button class="detail-button" type="button" data-action="add-to-cart">Thêm vào giỏ</button>
@@ -97,7 +110,28 @@
                 `;
             }
 
-            productDetail.innerHTML = productDetailHTML(product);
+            async function loadProduct() {
+                renderLoading();
+
+                try {
+                    product = await fetchProductById(selectedId);
+                    productDetail.innerHTML = productDetailHTML(product);
+                } catch (error) {
+                    productDetail.innerHTML = `<p class="feedback-message is-error">Không thể tải sản phẩm. ${error.message}</p>`;
+                }
+            }
+
+            productDetail.addEventListener("click", (event) => {
+                if (!event.target.closest('[data-action="add-to-cart"]') || !product) {
+                    return;
+                }
+
+                addToCart(product);
+                updateCartBadge();
+            });
+
+            updateCartBadge();
+            loadProduct();
         </script>
     </body>
 </html>
