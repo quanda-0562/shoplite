@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ShopLite - Mua sắm trực tuyến</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        >
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="page-shell header-inner">
+                <a class="brand" href="index.html">
+                    <h1>ShopLite</h1>
+                </a>
+
+                <div class="header-tools">
+                    <input
+                        id="search-input"
+                        class="search-input"
+                        type="search"
+                        placeholder="Tìm kiếm sản phẩm..."
+                        aria-label="Tìm kiếm sản phẩm"
+                    >
+                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
+                        🛒
+                        <span id="cart-badge" class="cart-badge">0</span>
+                    </a>
+                </div>
+
+                <nav class="site-nav" aria-label="Điều hướng chính">
+                    <a class="is-active" href="index.html">Trang chủ</a>
+                    <a href="product.html">Sản phẩm</a>
+                    <a href="#">Bộ sưu tập</a>
+                    <a href="#">Áo khoác</a>
+                    <a href="#">Giày</a>
+                    <a href="#">Phụ kiện</a>
+                    <a href="cart.html">Giỏ hàng</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Bộ sưu tập mới</span>
+                    <h2>Sản phẩm nổi bật</h2>
+                    <p>
+                        ShopLite dùng chung một bộ CSS variables cho màu sắc, spacing và bo góc. Lưới sản phẩm tự
+                        đổi số cột nhờ <code>repeat(auto-fill, minmax(220px, 1fr))</code> nên vẫn mượt từ màn hẹp
+                        360px tới desktop rộng.
+                    </p>
+                </div>
+
+                <section id="product-grid" class="product-grid" aria-label="Danh sách sản phẩm"></section>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="page-shell footer-inner">
+                <h2>Liên hệ</h2>
+                <p>Email: support@shoplite.vn</p>
+                <p>Facebook: fb.com/shoplite</p>
+                <p>Số điện thoại: 0987 654 321</p>
+                <p>&copy; 2026 ShopLite</p>
+            </div>
+        </footer>
+
+        <script type="module">
+            import { fetchProducts } from "./data.js";
+            import { addToCart, getCartQuantity } from "./cart.js";
+            import { filterByKeyword, formatPrice } from "./product-utils.js";
+
+            const searchInput = document.getElementById("search-input");
+            const productGrid = document.getElementById("product-grid");
+            const cartBadge = document.getElementById("cart-badge");
+            let products = [];
+
+            function updateCartBadge() {
+                cartBadge.textContent = getCartQuantity();
+            }
+
+            function productCardHTML(product) {
+                return `
+                    <article class="product-card surface-card" data-id="${product.id}">
+                        <a class="product-image" href="product.html?id=${product.id}" aria-label="Xem chi tiết ${product.title}">
+                            <img src="${product.thumbnail}" alt="${product.title}">
+                        </a>
+                        <h3><a href="product.html?id=${product.id}">${product.title}</a></h3>
+                        <p>${product.category} · ${product.rating}/5 sao</p>
+                        <div class="product-meta">
+                            <span class="product-price">${formatPrice(product.price)}</span>
+                        </div>
+                        <button class="product-button" type="button" data-action="add-to-cart">Thêm vào giỏ</button>
+                    </article>
+                `;
+            }
+
+            function renderSkeletons() {
+                productGrid.innerHTML = Array.from({ length: 8 }, () => `
+                    <article class="product-card surface-card skeleton-card" aria-hidden="true">
+                        <div class="product-image skeleton"></div>
+                        <div class="skeleton skeleton-line"></div>
+                        <div class="skeleton skeleton-line skeleton-line-short"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </article>
+                `).join("");
+            }
+
+            function renderProducts(list) {
+                if (list.length === 0) {
+                    productGrid.innerHTML = '<p class="feedback-message">Không tìm thấy sản phẩm phù hợp.</p>';
+                    return;
+                }
+
+                productGrid.innerHTML = list.map(productCardHTML).join("");
+            }
+
+            function renderError(message) {
+                productGrid.innerHTML = `<p class="feedback-message is-error">Không thể tải sản phẩm. ${message}</p>`;
+            }
+
+            async function loadProducts() {
+                renderSkeletons();
+
+                try {
+                    products = await fetchProducts();
+                    renderProducts(products);
+                } catch (error) {
+                    renderError(error.message);
+                }
+            }
+
+            searchInput.addEventListener("input", (event) => {
+                renderProducts(filterByKeyword(products, event.target.value));
+            });
+
+            productGrid.addEventListener("click", (event) => {
+                const addButton = event.target.closest('[data-action="add-to-cart"]');
+                const card = event.target.closest("[data-id]");
+
+                if (!addButton || !card) {
+                    return;
+                }
+
+                const product = products.find((item) => item.id === Number(card.dataset.id));
+
+                if (product) {
+                    addToCart(product);
+                    updateCartBadge();
+                }
+            });
+
+            updateCartBadge();
+            loadProducts();
+        </script>
+    </body>
+</html>

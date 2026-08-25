@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ShopLite - Chi tiết sản phẩm</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        >
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="page-shell header-inner">
+                <a class="brand" href="index.html">
+                    <div class="brand-mark">ShopLite</div>
+                </a>
+
+                <div class="header-tools">
+                    <input class="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
+                        🛒
+                        <span id="cart-badge" class="cart-badge">0</span>
+                    </a>
+                </div>
+
+                <nav class="site-nav" aria-label="Điều hướng chính">
+                    <a href="index.html">Trang chủ</a>
+                    <a class="is-active" href="product.html">Sản phẩm</a>
+                    <a href="#">Bộ sưu tập</a>
+                    <a href="#">Áo khoác</a>
+                    <a href="#">Giày</a>
+                    <a href="#">Phụ kiện</a>
+                    <a href="cart.html">Giỏ hàng</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-shell">
+                <a class="back-link" href="index.html">← Quay lại danh sách sản phẩm</a>
+
+                <section id="product-detail" aria-label="Chi tiết sản phẩm"></section>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="page-shell footer-inner">
+                <h2>Liên hệ</h2>
+                <p>Email: support@shoplite.vn</p>
+                <p>Facebook: fb.com/shoplite</p>
+                <p>Số điện thoại: 0987 654 321</p>
+                <p>&copy; 2026 ShopLite</p>
+            </div>
+        </footer>
+
+        <script type="module">
+            import { fetchProductById } from "./data.js";
+            import { addToCart, getCartQuantity } from "./cart.js";
+            import { formatPrice } from "./product-utils.js";
+
+            const productDetail = document.getElementById("product-detail");
+            const cartBadge = document.getElementById("cart-badge");
+            const selectedId = Number(new URLSearchParams(window.location.search).get("id")) || 1;
+            let product = null;
+
+            function updateCartBadge() {
+                cartBadge.textContent = getCartQuantity();
+            }
+
+            function renderLoading() {
+                productDetail.innerHTML = `
+                    <div class="product-detail detail-loading" aria-label="Đang tải sản phẩm">
+                        <div class="detail-gallery surface-card"><div class="detail-image skeleton"></div></div>
+                        <article class="detail-panel surface-card">
+                            <div class="skeleton skeleton-line"></div>
+                            <div class="skeleton skeleton-line skeleton-line-short"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-button"></div>
+                        </article>
+                    </div>
+                `;
+            }
+
+            function productDetailHTML(item) {
+                return `
+                    <div class="product-detail" data-id="${item.id}">
+                        <div class="detail-gallery surface-card">
+                            <div class="detail-image">
+                                <img src="${item.thumbnail}" alt="${item.title}">
+                            </div>
+                        </div>
+
+                        <article class="detail-panel surface-card">
+                            <span class="eyebrow">${item.category}</span>
+                            <h1>${item.title}</h1>
+                            <p class="detail-price">${formatPrice(item.price)}</p>
+                            <p class="detail-description">${item.description}</p>
+                            <ul class="detail-list">
+                                <li>Mã sản phẩm: #${item.id}</li>
+                                <li>Tồn kho: ${item.stock} sản phẩm</li>
+                                <li>Đánh giá khách hàng: ${item.rating}/5 sao</li>
+                            </ul>
+                            <button class="detail-button" type="button" data-action="add-to-cart">Thêm vào giỏ</button>
+                        </article>
+                    </div>
+                `;
+            }
+
+            async function loadProduct() {
+                renderLoading();
+
+                try {
+                    product = await fetchProductById(selectedId);
+                    productDetail.innerHTML = productDetailHTML(product);
+                } catch (error) {
+                    productDetail.innerHTML = `<p class="feedback-message is-error">Không thể tải sản phẩm. ${error.message}</p>`;
+                }
+            }
+
+            productDetail.addEventListener("click", (event) => {
+                if (!event.target.closest('[data-action="add-to-cart"]') || !product) {
+                    return;
+                }
+
+                addToCart(product);
+                updateCartBadge();
+            });
+
+            updateCartBadge();
+            loadProduct();
+        </script>
+    </body>
+</html>

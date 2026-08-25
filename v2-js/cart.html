@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ShopLite - Giỏ hàng</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        >
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="page-shell header-inner">
+                <a class="brand" href="index.html">
+                    <div class="brand-mark">ShopLite</div>
+                </a>
+
+                <div class="header-tools">
+                    <input class="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
+                        🛒
+                        <span id="cart-badge" class="cart-badge">0</span>
+                    </a>
+                </div>
+
+                <nav class="site-nav" aria-label="Điều hướng chính">
+                    <a href="index.html">Trang chủ</a>
+                    <a href="product.html">Sản phẩm</a>
+                    <a href="#">Bộ sưu tập</a>
+                    <a href="#">Áo khoác</a>
+                    <a href="#">Giày</a>
+                    <a href="#">Phụ kiện</a>
+                    <a class="is-active" href="cart.html">Giỏ hàng</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Giỏ hàng của bạn</span>
+                    <h2>Kiểm tra lại đơn trước khi thanh toán</h2>
+                    <p>
+                        Layout này gồm danh sách sản phẩm ở bên trái và khối tổng kết ở bên phải. Trên mobile,
+                        hai khối sẽ tự xếp dọc để thao tác thoải mái hơn.
+                    </p>
+                </div>
+
+                <div class="cart-layout">
+                    <section id="cart-list" class="cart-list surface-card" aria-label="Danh sách sản phẩm trong giỏ"></section>
+
+                    <aside class="cart-summary surface-card">
+                        <h2>Tóm tắt đơn hàng</h2>
+                        <div class="cart-summary-row">
+                            <span>Tạm tính</span>
+                            <strong id="cart-subtotal">$0.00</strong>
+                        </div>
+                        <div class="cart-summary-total">
+                            <span>Tổng cộng</span>
+                            <strong id="cart-total">$0.00</strong>
+                        </div>
+                        <button class="cart-checkout-button" type="button">Thanh toán</button>
+                        <p class="cart-summary-note">
+                            Đây là giao diện tĩnh để mô phỏng cấu trúc giỏ hàng. Chỉ cần thêm class
+                            <code>dark</code> vào thẻ <code>body</code> là toàn bộ theme sẽ đổi đồng bộ.
+                        </p>
+                    </aside>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="page-shell footer-inner">
+                <h2>Liên hệ</h2>
+                <p>Email: support@shoplite.vn</p>
+                <p>Facebook: fb.com/shoplite</p>
+                <p>Số điện thoại: 0987 654 321</p>
+                <p>&copy; 2026 ShopLite</p>
+            </div>
+        </footer>
+
+        <script type="module">
+            import {
+                getCart,
+                getCartQuantity,
+                getCartTotal,
+                removeFromCart,
+                updateQty
+            } from "./cart.js";
+            import { formatPrice } from "./product-utils.js";
+
+            const cartList = document.getElementById("cart-list");
+            const cartBadge = document.getElementById("cart-badge");
+            const cartSubtotal = document.getElementById("cart-subtotal");
+            const cartTotal = document.getElementById("cart-total");
+
+            function cartItemHTML(item) {
+                return `
+                    <article class="cart-item" data-id="${item.id}">
+                        <div class="cart-item-info">
+                            <a class="cart-thumb" href="product.html?id=${item.id}" aria-label="Xem chi tiết ${item.title}">
+                                <img src="${item.thumbnail}" alt="${item.title}">
+                            </a>
+                            <div class="cart-item-name">
+                                <h3><a href="product.html?id=${item.id}">${item.title}</a></h3>
+                                <p>${item.category}</p>
+                            </div>
+                        </div>
+                        <div class="cart-quantity" aria-label="Số lượng ${item.title}">
+                            <button type="button" data-action="decrease" aria-label="Giảm số lượng">−</button>
+                            <input class="cart-qty" type="number" value="${item.quantity}" min="1" data-action="quantity">
+                            <button type="button" data-action="increase" aria-label="Tăng số lượng">+</button>
+                        </div>
+                        <div class="cart-price">${formatPrice(item.price)}</div>
+                        <button class="cart-remove-button" type="button" data-action="remove">Xóa</button>
+                    </article>
+                `;
+            }
+
+            function renderCart() {
+                const cart = getCart();
+                const total = getCartTotal(cart);
+
+                cartBadge.textContent = getCartQuantity(cart);
+                cartSubtotal.textContent = formatPrice(total);
+                cartTotal.textContent = formatPrice(total);
+
+                if (cart.length === 0) {
+                    cartList.innerHTML = '<p class="cart-empty">Giỏ hàng đang trống. Hãy chọn sản phẩm bạn yêu thích.</p>';
+                    return;
+                }
+
+                cartList.innerHTML = cart.map(cartItemHTML).join("");
+            }
+
+            cartList.addEventListener("click", (event) => {
+                const actionButton = event.target.closest("[data-action]");
+                const item = event.target.closest("[data-id]");
+
+                if (!actionButton || !item) {
+                    return;
+                }
+
+                const productId = Number(item.dataset.id);
+                const cartItem = getCart().find((entry) => entry.id === productId);
+
+                if (actionButton.dataset.action === "remove") {
+                    removeFromCart(productId);
+                }
+
+                if (actionButton.dataset.action === "increase" && cartItem) {
+                    updateQty(productId, cartItem.quantity + 1);
+                }
+
+                if (actionButton.dataset.action === "decrease" && cartItem) {
+                    updateQty(productId, Math.max(1, cartItem.quantity - 1));
+                }
+
+                renderCart();
+            });
+
+            cartList.addEventListener("change", (event) => {
+                const quantityInput = event.target.closest('[data-action="quantity"]');
+                const item = event.target.closest("[data-id]");
+
+                if (!quantityInput || !item) {
+                    return;
+                }
+
+                updateQty(Number(item.dataset.id), quantityInput.value);
+                renderCart();
+            });
+
+            renderCart();
+        </script>
+    </body>
+</html>
