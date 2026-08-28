@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ShopLite - Chi tiết sản phẩm</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        >
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="page-shell header-inner">
+                <a class="brand" href="index.html"><div class="brand-mark">ShopLite</div></a>
+                <div class="header-tools">
+                    <input class="search-input" type="search" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm sản phẩm">
+                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">🛒<span id="cart-badge" class="cart-badge">0</span></a>
+                </div>
+                <nav class="site-nav" aria-label="Điều hướng chính">
+                    <a href="index.html">Trang chủ</a>
+                    <a class="is-active" href="product.html?id=1">Sản phẩm</a>
+                    <a href="#">Bộ sưu tập</a>
+                    <a href="#">Áo khoác</a>
+                    <a href="#">Giày</a>
+                    <a href="#">Phụ kiện</a>
+                    <a href="cart.html">Giỏ hàng</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-shell">
+                <a class="back-link" href="index.html">← Quay lại danh sách sản phẩm</a>
+                <section id="product-detail" aria-label="Chi tiết sản phẩm"></section>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="page-shell footer-inner">
+                <h2>Liên hệ</h2>
+                <p>Email: support@shoplite.vn</p>
+                <p>Facebook: fb.com/shoplite</p>
+                <p>Số điện thoại: 0987 654 321</p>
+                <p>&copy; 2026 ShopLite</p>
+            </div>
+        </footer>
+        <script type="module" src="/src/product-page.ts"></script>
+    </body>
+</html>
