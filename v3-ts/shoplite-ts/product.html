@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>ShopLite - TypeScript</title>
+        <title>ShopLite - Chi tiết sản phẩm</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -14,25 +14,14 @@
     <body>
         <header class="site-header">
             <div class="page-shell header-inner">
-                <a class="brand" href="index.html"><h1>ShopLite</h1></a>
-
+                <a class="brand" href="index.html"><div class="brand-mark">ShopLite</div></a>
                 <div class="header-tools">
-                    <input
-                        id="search-input"
-                        class="search-input"
-                        type="search"
-                        placeholder="Tìm kiếm sản phẩm..."
-                        aria-label="Tìm kiếm sản phẩm"
-                    >
-                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">
-                        🛒
-                        <span id="cart-badge" class="cart-badge">0</span>
-                    </a>
+                    <input class="search-input" type="search" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm sản phẩm">
+                    <a class="cart-button" href="cart.html" aria-label="Đi đến giỏ hàng">🛒<span id="cart-badge" class="cart-badge">0</span></a>
                 </div>
-
                 <nav class="site-nav" aria-label="Điều hướng chính">
-                    <a class="is-active" href="index.html">Trang chủ</a>
-                    <a href="product.html?id=1">Sản phẩm</a>
+                    <a href="index.html">Trang chủ</a>
+                    <a class="is-active" href="product.html?id=1">Sản phẩm</a>
                     <a href="#">Bộ sưu tập</a>
                     <a href="#">Áo khoác</a>
                     <a href="#">Giày</a>
@@ -44,12 +33,8 @@
 
         <main class="page-main">
             <section class="page-shell">
-                <div class="section-heading">
-                    <span class="eyebrow">Bộ sưu tập mới</span>
-                    <h2>Sản phẩm nổi bật</h2>
-                    <p>Phiên bản ShopLite được xây dựng lại bằng TypeScript.</p>
-                </div>
-                <section id="product-grid" class="product-grid" aria-label="Danh sách sản phẩm"></section>
+                <a class="back-link" href="index.html">← Quay lại danh sách sản phẩm</a>
+                <section id="product-detail" aria-label="Chi tiết sản phẩm"></section>
             </section>
         </main>
 
@@ -62,7 +47,6 @@
                 <p>&copy; 2026 ShopLite</p>
             </div>
         </footer>
-
-        <script type="module" src="/src/main.ts"></script>
+        <script type="module" src="/src/product-page.ts"></script>
     </body>
 </html>
