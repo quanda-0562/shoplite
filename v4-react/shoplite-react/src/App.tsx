@@ -7,15 +7,13 @@ import { ProductList } from './components/ProductList'
 import { ProductListSkeleton } from './components/ProductListSkeleton'
 import { useProducts } from './hooks/useProducts'
 import { ProductDetailPage } from './pages/ProductDetailPage'
-import type { CartItem, Product } from './types'
 import { normalizeVietnamese } from './utils/normalizeVietnamese'
 
 interface CatalogPageProps {
   query: string
-  onAddToCart: (product: Product) => void
 }
 
-function CatalogPage({ query, onAddToCart }: CatalogPageProps) {
+function CatalogPage({ query }: CatalogPageProps) {
   const navigate = useNavigate()
   const { data: products = [], isLoading, isError, error, refetch } = useProducts()
   const normalizedQuery = normalizeVietnamese(query)
@@ -45,7 +43,7 @@ function CatalogPage({ query, onAddToCart }: CatalogPageProps) {
       )}
 
       {!isLoading && !isError && filteredProducts.length > 0 && (
-        <ProductList products={filteredProducts} onAddToCart={onAddToCart} onViewDetail={(id) => navigate(`/products/${id}`)} />
+        <ProductList products={filteredProducts} onViewDetail={(id) => navigate(`/products/${id}`)} />
       )}
 
       {!isLoading && !isError && filteredProducts.length === 0 && (
@@ -53,7 +51,7 @@ function CatalogPage({ query, onAddToCart }: CatalogPageProps) {
       )}
 
       <section className="mt-14 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
-        <strong>Client state:</strong> Giỏ hàng tạm đang nằm trong <code className="rounded bg-amber-100 px-1">useState</code> của App. Dữ liệu sản phẩm được TanStack Query quản lý riêng.
+        <strong>Client state:</strong> Giỏ hàng được Zustand quản lý toàn cục và tự lưu vào <code className="rounded bg-amber-100 px-1">localStorage</code>. Dữ liệu sản phẩm được TanStack Query quản lý riêng.
       </section>
 
       <section className="mt-8 grid gap-6 md:grid-cols-2" aria-label="Biểu mẫu người dùng">
@@ -76,28 +74,14 @@ function CatalogPage({ query, onAddToCart }: CatalogPageProps) {
 
 function App() {
   const [query, setQuery] = useState('')
-  const [cartItems, setCartItems] = useState<CartItem[]>([])
-  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
-
-  function addToCart(product: Product) {
-    setCartItems((currentCart) => {
-      const existingItem = currentCart.find((item) => item.id === product.id)
-
-      if (existingItem) {
-        return currentCart.map((item) => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item)
-      }
-
-      return [...currentCart, { ...product, quantity: 1 }]
-    })
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Header query={query} onQueryChange={setQuery} cartCount={cartCount} />
+      <Header query={query} onQueryChange={setQuery} />
       <main id="products" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <Routes>
-          <Route path="/" element={<CatalogPage query={query} onAddToCart={addToCart} />} />
-          <Route path="/products/:id" element={<ProductDetailPage onAddToCart={addToCart} />} />
+          <Route path="/" element={<CatalogPage query={query} />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

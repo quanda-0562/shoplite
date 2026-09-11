@@ -1,16 +1,16 @@
 import { useProduct } from '../hooks/useProducts'
-import type { Product } from '../types'
+import { useCartStore } from '../store/cartStore'
 
 interface ProductDetailProps {
   productId: number
   onClose: () => void
-  onAddToCart: (product: Product) => void
 }
 
 const currencyFormatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 })
 
-export function ProductDetail({ productId, onClose, onAddToCart }: ProductDetailProps) {
+export function ProductDetail({ productId, onClose }: ProductDetailProps) {
   const { data: product, isLoading, isError, error, refetch } = useProduct(productId)
+  const addToCart = useCartStore((state) => state.addToCart)
 
   return (
     <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7" aria-live="polite">
@@ -32,7 +32,7 @@ export function ProductDetail({ productId, onClose, onAddToCart }: ProductDetail
             <p className="mt-4 text-2xl font-black text-rose-600">{currencyFormatter.format(product.price)}</p>
             <p className="mt-4 leading-7 text-slate-600">{product.description}</p>
             <p className="mt-4 text-sm text-slate-500">Rating {product.rating.toFixed(1)} | Còn {product.stock} sản phẩm</p>
-            <button type="button" onClick={() => onAddToCart(product)} className="mt-6 rounded-xl bg-blue-600 px-4 py-3 font-bold text-white hover:bg-blue-700">Thêm vào giỏ</button>
+            <button type="button" onClick={() => addToCart(product)} className="mt-6 rounded-xl bg-blue-600 px-4 py-3 font-bold text-white hover:bg-blue-700">Thêm vào giỏ</button>
           </div>
         </div>
       )}
