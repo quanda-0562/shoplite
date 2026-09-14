@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { Product } from '../types'
 import { useCartStore } from '../store/cartStore'
 
@@ -8,7 +9,7 @@ interface ProductCardProps {
 
 const currencyFormatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 })
 
-export function ProductCard({ product, onViewDetail }: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({ product, onViewDetail }: ProductCardProps) {
   const addToCart = useCartStore((state) => state.addToCart)
 
   return (
@@ -26,4 +27,4 @@ export function ProductCard({ product, onViewDetail }: ProductCardProps) {
       </div>
     </article>
   )
-}
+})

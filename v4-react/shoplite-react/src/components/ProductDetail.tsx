@@ -16,7 +16,7 @@ export function ProductDetail({ productId, onClose }: ProductDetailProps) {
     <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7" aria-live="polite">
       <div className="mb-5 flex items-center justify-between gap-4">
         <h2 className="text-xl font-black">Chi tiết sản phẩm</h2>
-        <button type="button" onClick={onClose} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">Đóng</button>
+        <button type="button" onClick={onClose} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">Quay lại</button>
       </div>
 
       {isLoading && <div className="grid animate-pulse gap-6 md:grid-cols-2"><div className="aspect-square rounded-xl bg-slate-200" /><div className="space-y-4"><div className="h-7 w-3/4 rounded bg-slate-200" /><div className="h-5 w-1/3 rounded bg-slate-200" /><div className="h-20 rounded bg-slate-200" /></div></div>}

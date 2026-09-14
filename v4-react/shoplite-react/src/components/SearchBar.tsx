@@ -5,7 +5,7 @@ interface SearchBarProps {
 
 export function SearchBar({ query, onQueryChange }: SearchBarProps) {
   return (
-    <label className="relative ml-auto max-w-xl flex-1">
+    <label className="relative ml-auto min-w-0 max-w-xl flex-1">
       <span className="sr-only">Tìm kiếm sản phẩm</span>
       <input
         type="search"
