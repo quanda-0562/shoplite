@@ -1,19 +1,19 @@
-import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-// Next 16 uses proxy.ts in place of the deprecated middleware.ts convention.
-export function proxy(request: NextRequest) {
-  const hasSession = request.cookies.get("demo_session")?.value === "1";
+const authSecret = process.env.NEXTAUTH_SECRET ?? "development-only-secret-change-in-production";
 
-  if (!hasSession) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("from", request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+// Next.js 16 calls this request guard Proxy; it replaces middleware.ts.
+export async function proxy(request: NextRequest) {
+  const token = await getToken({ req: request, secret: authSecret });
+  if (token) return NextResponse.next();
 
-  return NextResponse.next();
+  const loginUrl = new URL("/login", request.url);
+  loginUrl.searchParams.set("from", request.nextUrl.pathname);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
-  matcher: ["/orders", "/checkout"],
+  matcher: ["/orders", "/checkout/:path*"],
 };

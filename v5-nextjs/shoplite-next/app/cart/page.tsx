@@ -1,5 +1,5 @@
-import { RoutePlaceholder } from "../components/RoutePlaceholder";
+import { CartContents } from "../components/CartContents";
 
 export default function CartPage() {
-  return <RoutePlaceholder title="Giỏ hàng" description="Trang /cart là khung cho danh sách sản phẩm, số lượng và tổng tiền." />;
+  return <section><h1 className="text-3xl font-black">Giỏ hàng</h1><div className="mt-6"><CartContents /></div></section>;
 }
