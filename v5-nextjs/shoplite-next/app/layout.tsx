@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import localFont from "next/font/local";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Providers } from "./providers";
+import { siteUrl } from "./lib/siteUrl";
 import "./globals.css";
 
-const geist = Geist({
+const geist = localFont({
+  src: "./fonts/Geist-Regular.woff2",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "ShopLite",
-  description: "ShopLite built with Next.js",
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  title: {
+    default: "ShopLite | Mua sắm trực tuyến dễ dàng",
+    template: "%s | ShopLite",
+  },
+  description: "Khám phá sản phẩm, tìm kiếm theo danh mục và mua sắm dễ dàng tại ShopLite.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

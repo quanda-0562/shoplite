@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShopLite Next.js
 
-## Getting Started
+Ứng dụng cửa hàng trực tuyến mẫu dùng Next.js App Router và dữ liệu sản phẩm từ DummyJSON. Có thể tìm kiếm, lọc sản phẩm, quản lý giỏ hàng và thử quy trình đặt hàng.
 
-First, run the development server:
+## Tính năng
+
+- Danh sách sản phẩm render trên server, tìm kiếm theo tên, lọc danh mục và phân trang.
+- Trang chi tiết có metadata riêng qua `generateMetadata`; ảnh sản phẩm dùng `next/image` và font Geist dùng `next/font/local`.
+- Giỏ hàng lưu trên trình duyệt bằng Zustand.
+- Đăng nhập tài khoản DummyJSON qua NextAuth; form đặt hàng kiểm tra dữ liệu bằng React Hook Form và Zod.
+- Xem tối đa 10 đơn hàng thử nghiệm lưu trong cookie của trình duyệt.
+
+## Công nghệ
+
+Next.js 16, React 19, TypeScript, Tailwind CSS 4, NextAuth, Zustand, React Hook Form, Zod và DummyJSON API.
+
+## Chạy local
+
+Yêu cầu Node.js 20.9 trở lên và kết nối tới `dummyjson.com`.
 
 ```bash
+cd v5-nextjs/shoplite-next
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở [http://localhost:3000](http://localhost:3000). Tài khoản mẫu: `emilys` / `emilyspass`. Để chạy bản production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Khi triển khai, đặt `NEXTAUTH_URL`, `NEXTAUTH_SECRET`; có thể đặt thêm `NEXT_PUBLIC_SITE_URL` để tạo canonical URL (Vercel tự cung cấp `VERCEL_PROJECT_PRODUCTION_URL`). Đây là ứng dụng demo: đơn hàng lưu trong cookie, không có thanh toán thật hay cơ sở dữ liệu.
 
-## Learn More
+## Demo Vercel
 
-To learn more about Next.js, take a look at the following resources:
+Chưa tìm thấy URL triển khai đã xác minh trong repo. Cần cập nhật đường dẫn tại đây sau khi có URL Vercel.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Xem thêm [README ở thư mục gốc](../../README.md) để biết các phiên bản khác của ShopLite.

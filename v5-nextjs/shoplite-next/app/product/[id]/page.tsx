@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { AddToCartButton } from "../../components/AddToCartButton";
+import { siteUrl } from "../../lib/siteUrl";
 import type { Product } from "../../types/product";
 
 interface ProductDetail extends Product {
@@ -18,10 +20,7 @@ export async function generateStaticParams() {
   return [{ id: "1" }, { id: "2" }, { id: "3" }];
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = await params;
-
-  // Server Component: data fetching and detail HTML are generated on the server.
+async function getProduct(id: string): Promise<ProductDetail> {
   const res = await fetch(`https://dummyjson.com/products/${id}`, {
     next: { revalidate: 300 },
   });
@@ -29,13 +28,43 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error("Không thể tải chi tiết sản phẩm.");
 
-  const product: ProductDetail = await res.json();
+  return res.json();
+}
+
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
+  const description = product.description.slice(0, 160);
+
+  return {
+    title: product.title,
+    description,
+    alternates: siteUrl ? { canonical: `${siteUrl}/product/${id}` } : undefined,
+    openGraph: {
+      title: `${product.title} | ShopLite`,
+      description,
+      type: "website",
+      images: [{ url: product.thumbnail, alt: product.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.title} | ShopLite`,
+      description,
+      images: [product.thumbnail],
+    },
+  };
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { id } = await params;
+  // The matching fetch in generateMetadata is memoized by Next.js for this render.
+  const product = await getProduct(id);
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
       <div className="grid gap-7 md:grid-cols-2">
         <div className="relative aspect-square overflow-hidden rounded-xl bg-slate-100">
-          <Image src={product.thumbnail} alt={product.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-cover" priority />
+          <Image src={product.thumbnail} alt={product.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-cover" preload fetchPriority="high" />
         </div>
         <div className="flex flex-col">
           <p className="text-sm font-bold uppercase tracking-wider text-blue-600">{product.category}</p>

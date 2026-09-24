@@ -1,6 +1,19 @@
 import { ProductCard } from "./components/ProductCard";
 import type { Product } from "./types/product";
+import type { Metadata } from "next";
 import { connection } from "next/server";
+import { siteUrl } from "./lib/siteUrl";
+
+export const metadata: Metadata = {
+  title: { absolute: "ShopLite | Mua sắm trực tuyến dễ dàng" },
+  description: "Khám phá sản phẩm nổi bật tại ShopLite. Tìm kiếm, lọc theo danh mục và chọn món đồ phù hợp với bạn.",
+  alternates: siteUrl ? { canonical: siteUrl } : undefined,
+  openGraph: {
+    title: "ShopLite | Mua sắm trực tuyến dễ dàng",
+    description: "Khám phá sản phẩm nổi bật và mua sắm dễ dàng tại ShopLite.",
+    type: "website",
+  },
+};
 
 interface ProductsResponse {
   products: Product[];
@@ -55,17 +68,19 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       <p className="mt-3 max-w-2xl text-slate-600">Danh sách được fetch và render trên server. Chỉ ô tìm kiếm, badge và nút thêm giỏ được gửi JavaScript xuống trình duyệt.</p>
 
       <form action="/" className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-[1fr_220px_auto]">
-        <input name="q" defaultValue={q} placeholder="Tìm sản phẩm..." className="rounded-lg border border-slate-300 px-3 py-2" />
-        <select name="category" defaultValue={category} className="rounded-lg border border-slate-300 px-3 py-2"><option value="">Tất cả danh mục</option>{categories.map((item) => <option key={item} value={item}>{item}</option>)}</select>
+        <label className="sr-only" htmlFor="product-search">Tìm sản phẩm</label>
+        <input id="product-search" name="q" defaultValue={q} placeholder="Tìm sản phẩm..." className="rounded-lg border border-slate-300 px-3 py-2" />
+        <label className="sr-only" htmlFor="product-category">Danh mục</label>
+        <select id="product-category" name="category" defaultValue={category} className="rounded-lg border border-slate-300 px-3 py-2"><option value="">Tất cả danh mục</option>{categories.map((item) => <option key={item} value={item}>{item}</option>)}</select>
         <button type="submit" className="rounded-lg bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700">Lọc</button>
       </form>
       <p className="mt-4 text-sm text-slate-600">{filteredProducts.length} sản phẩm phù hợp</p>
 
       <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {visibleProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+        {visibleProducts.map((product, index) => <ProductCard key={product.id} product={product} preload={index === 0} />)}
       </div>
       {!visibleProducts.length && <p className="mt-8 rounded-xl border border-dashed border-slate-300 p-6 text-slate-600">Không tìm thấy sản phẩm phù hợp.</p>}
-      <nav aria-label="Phân trang" className="mt-8 flex items-center justify-center gap-3">{page > 1 ? <a href={pageHref(page - 1)} className="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-100">Trước</a> : <span className="rounded-lg border border-slate-200 px-3 py-2 text-slate-400">Trước</span>}<span className="text-sm text-slate-600">Trang {page} / {totalPages}</span>{page < totalPages ? <a href={pageHref(page + 1)} className="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-100">Sau</a> : <span className="rounded-lg border border-slate-200 px-3 py-2 text-slate-400">Sau</span>}</nav>
+      <nav aria-label="Phân trang" className="mt-8 flex items-center justify-center gap-3">{page > 1 ? <a href={pageHref(page - 1)} className="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-100">Trước</a> : <span className="rounded-lg border border-slate-200 px-3 py-2 text-slate-600">Trước</span>}<span className="text-sm text-slate-600">Trang {page} / {totalPages}</span>{page < totalPages ? <a href={pageHref(page + 1)} className="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-100">Sau</a> : <span className="rounded-lg border border-slate-200 px-3 py-2 text-slate-600">Sau</span>}</nav>
     </section>
   );
 }

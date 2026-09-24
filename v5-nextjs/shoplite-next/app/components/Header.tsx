@@ -25,7 +25,8 @@ export function Header() {
         </Suspense>
 
         {status === "loading" ? <span className="text-sm text-slate-500">...</span> : session?.user ? <><span className="hidden text-sm font-semibold text-slate-600 md:block">{session.user.name}</span><button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="shrink-0 text-sm font-bold text-slate-700 hover:text-blue-700">Đăng xuất</button></> : <Link href="/login" className="shrink-0 text-sm font-bold text-blue-700 hover:text-blue-900">Đăng nhập</Link>}
-        <Link href="/cart" className="relative grid size-10 shrink-0 place-items-center rounded-full text-slate-700 transition hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" aria-label="Giỏ hàng">
+        <Link href="/cart" className="relative grid size-10 shrink-0 place-items-center rounded-full text-slate-700 transition hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          <span className="sr-only">Giỏ hàng</span>
           <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M3 3h2l2.2 10.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L20 7H6" />
             <circle cx="10" cy="20" r="1" />
