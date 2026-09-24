@@ -36,7 +36,7 @@ Khi triển khai, đặt `NEXTAUTH_URL` theo địa chỉ website và tạo `NEX
 
 ## Demo Vercel
 
-Chưa tìm thấy URL triển khai của dự án trong repo. URL demo sẽ được thêm vào đây khi có địa chỉ Vercel đã xác minh.
+[Mở ShopLite trên Vercel](https://shop-lite-rose.vercel.app). Vercel hiện yêu cầu đăng nhập để xem demo.
 
 ## Các phiên bản
 

@@ -35,6 +35,6 @@ Khi triển khai, đặt `NEXTAUTH_URL`, `NEXTAUTH_SECRET`; có thể đặt th�
 
 ## Demo Vercel
 
-Chưa tìm thấy URL triển khai đã xác minh trong repo. Cần cập nhật đường dẫn tại đây sau khi có URL Vercel.
+[Mở ShopLite trên Vercel](https://shop-lite-rose.vercel.app). Vercel hiện yêu cầu đăng nhập để xem demo.
 
 Xem thêm [README ở thư mục gốc](../../README.md) để biết các phiên bản khác của ShopLite.
